@@ -2,8 +2,10 @@ import useSWR from 'swr';
 import { useSession } from '../context/session';
 import { ErrorProps, ListItem, Order, QueryParams, ShippingAndProductsInfo } from '../types';
 
-export async function fetcher(url: string, query: string, data: any = {}) {
-    const res = await fetch(`${url}?${query}`, { body: JSON.stringify(data) });
+export async function fetcher(url: string, query: string, data: any = null) {
+    let res;
+    if (data != null) await fetch(`${url}?${query}`, { body: JSON.stringify(data) });
+    else await fetch(`${url}?${query}`);
 
     // If the status code is not in the range 200-299, throw an error
     if (!res.ok) {
