@@ -9,9 +9,7 @@ const Home = () => {
 
 	useEffect(() => {
 		window.addEventListener("message", (event) => {
-			const te = event;
-
-			return te;
+			throw event;
 		});
 	}, []);
 
