@@ -39,7 +39,8 @@ const Home = () => {
 		create: loggedIn
 	});
 
-	console.warn(script);
+	if (loggedIn)
+		console.warn(script);
 
 	return (
 		<div className="container">
