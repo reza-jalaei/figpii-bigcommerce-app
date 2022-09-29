@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import useSWR from 'swr';
 import { useSession } from 'context/session';
-import { fetcher, useScriptAPI, useStore } from '../lib/hooks';
+import { fetcher, useStore } from '../lib/hooks';
 
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
