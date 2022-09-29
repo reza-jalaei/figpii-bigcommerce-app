@@ -15,27 +15,27 @@ const Home = () => {
 		window.addEventListener("message", async (event) => {
 			if (event.origin != "https://www.figpii.com") return;
 
-				console.warn(event);
+			console.warn(event);
 
-				if (event.data.type == "loginCompleted") {
-					console.warn("loginCompleted");
-					const params = new URLSearchParams({ context }).toString();
-					const data = await fetcher('/api/createScript', params, {
-						name: "figpiiscript",
-						description: "figpiiscript",
-						html: `<script id="piiTester" type="text/javascript" async="async" crossorigin="anonymous" src="//tracking-cdn.figpii.com/${event.data.code}.js"></script>`,
+			if (event.data.type == "loginCompleted") {
+				console.warn("loginCompleted");
+				const params = new URLSearchParams({ context }).toString();
+				const data = await fetcher('/api/createScript', params, "POST", {
+					name: "figpiiscript",
+					description: "figpiiscript",
+					html: `<script id="piiTester" type="text/javascript" async="async" crossorigin="anonymous" src="//tracking-cdn.figpii.com/${event.data.code}.js"></script>`,
 						auto_uninstall: true,
-						load_method: "default",
-						location: "head",
-						visibility: "all_pages",
-						kind: "script_tag",
-						consent_category: "functional",
-						enabled: true,
-						channel_id: 1
-					});
+					load_method: "default",
+					location: "head",
+					visibility: "all_pages",
+					kind: "script_tag",
+					consent_category: "functional",
+					enabled: true,
+					channel_id: 1
+				});
 
-					throw { data: data };
-				}
+				throw { data: data };
+			}
 		});
 	}, []);
 
