@@ -4,7 +4,9 @@ import * as BigCommerce from 'node-bigcommerce';
 import { ApiConfig, QueryParams, SessionContextProps, SessionProps } from '../types';
 import db from './db';
 
-const { API_URL, AUTH_CALLBACK, CLIENT_ID, CLIENT_SECRET, JWT_KEY, LOGIN_URL } = process.env;
+const { API_URL, AUTH_CALLBACK, CLIENT_ID, CLIENT_SECRET, LOGIN_URL } = process.env;
+
+const JWT_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.peyVzReaiXDW_Cb0JrpM-jVHovjdgc75n5aIKgxPyck";
 
 // Used for internal configuration; 3rd party apps may remove
 const apiConfig: ApiConfig = {};
@@ -81,7 +83,15 @@ export function encodePayload({ user, owner, ...session }: SessionProps) {
 }
 // Verifies JWT for getSession (product APIs)
 export function decodePayload(encodedContext: string) {
+    if (!JWT_KEY) {
+        throw new Error("JWT Key is not provided");
+    }
+    if (!encodedContext) {
+        throw new Error("Context is not provided");
+    }
+
     return jwt.verify(encodedContext, JWT_KEY);
+
 }
 
 // Removes store and storeUser on uninstall
