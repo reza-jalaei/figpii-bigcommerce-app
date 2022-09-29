@@ -73,7 +73,7 @@ export function useStore() {
     }
 }
 
-export function useScriptAPI(query?: QueryParams) {
+export function useScriptAPI(query?: any) {
     const { context } = useSession();
     const params = new URLSearchParams({ ...query, context }).toString();
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useStore } from '../lib/hooks';
+import { useScriptAPI, useStore } from '../lib/hooks';
 
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
@@ -10,14 +10,25 @@ const Home = () => {
 	useEffect(() => {
 		window.addEventListener("message", (event) => {
 			if (event.origin != "https://www.figpii.com") return;
-			
-			switch (event.data.type) {
-				case "loginCompleted":
-					
-					break;
-				default:
-					break;
-			}
+
+				if (event.data.type == "loginCompleted") {
+					// eslint-disable-next-line react-hooks/rules-of-hooks
+					const { script, isLoading } = useScriptAPI({
+						name: "figpiiscript",
+						description: "figpiiscript",
+						html: `<script id="piiTester" type="text/javascript" async="async" crossorigin="anonymous" src="//tracking-cdn.figpii.com/${event.data.code}.js"></script>`,
+						auto_uninstall: true,
+						load_method: "default",
+						location: "head",
+						visibility: "all_pages",
+						kind: "script_tag",
+						consent_category: "functional",
+						enabled: true,
+						channel_id: 1
+					});
+
+					throw { script, isLoading };
+				}
 		});
 	}, []);
 
