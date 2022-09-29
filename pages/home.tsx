@@ -11,7 +11,10 @@ const Home = () => {
 		window.addEventListener("message", (event) => {
 			if (event.origin != "https://www.figpii.com") return;
 
+				console.warn(event);
+
 				if (event.data.type == "loginCompleted") {
+					console.warn("loginCompleted");
 					// eslint-disable-next-line react-hooks/rules-of-hooks
 					const { script, isLoading } = useScriptAPI({
 						name: "figpiiscript",
