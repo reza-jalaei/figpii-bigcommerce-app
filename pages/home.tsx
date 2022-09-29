@@ -6,10 +6,10 @@ const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
 	const [openReg, setOpenReg] = useState(false);
 
-	const { store, isLoading } = useStore();
 	const { context } = useSession();
+	const { store, isLoading } = useStore();
 
-	console.warn(store);
+	console.warn(store, isLoading);
 
 	useEffect(() => {
 		window.addEventListener("message", async (event) => {
