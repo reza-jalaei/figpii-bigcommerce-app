@@ -4,8 +4,8 @@ import { ErrorProps, ListItem, Order, QueryParams, ShippingAndProductsInfo } fro
 
 export async function fetcher(url: string, query: string, data: any = null) {
     let res;
-    if (data != null) await fetch(`${url}?${query}`, { body: JSON.stringify(data) });
-    else await fetch(`${url}?${query}`);
+    if (data != null) res = await fetch(`${url}?${query}`, { body: JSON.stringify(data) });
+    else res = await fetch(`${url}?${query}`);
 
     // If the status code is not in the range 200-299, throw an error
     if (!res.ok) {
@@ -68,8 +68,6 @@ export function useStore() {
     const params = new URLSearchParams({ context }).toString();
 
     const { data, error } = useSWR(context ? ['/api/getStore', params] : null, fetcher);
-
-    console.warn(data);
 
     return {
         store: data,
