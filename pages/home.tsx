@@ -1,46 +1,42 @@
 import { useEffect, useState } from 'react';
-import { useScriptAPI, useStore } from '../lib/hooks';
+import useSWR from 'swr';
+import { useSession } from 'context/session';
+import { fetcher, useScriptAPI, useStore } from '../lib/hooks';
 
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
 	const [openReg, setOpenReg] = useState(false);
-	const [loggedIn, setLoggedIn] = useState(false);
-	const [accessKey, setAccessKey] = useState('');
 
 	const { store, isLoading } = useStore();
+	const { context } = useSession();
 
 	useEffect(() => {
-		window.addEventListener("message", (event) => {
+		window.addEventListener("message", async (event) => {
 			if (event.origin != "https://www.figpii.com") return;
 
 				console.warn(event);
 
 				if (event.data.type == "loginCompleted") {
 					console.warn("loginCompleted");
+					const params = new URLSearchParams({ context }).toString();
+					const data = await fetcher('/api/createScript', params, {
+						name: "figpiiscript",
+						description: "figpiiscript",
+						html: `<script id="piiTester" type="text/javascript" async="async" crossorigin="anonymous" src="//tracking-cdn.figpii.com/${event.data.code}.js"></script>`,
+						auto_uninstall: true,
+						load_method: "default",
+						location: "head",
+						visibility: "all_pages",
+						kind: "script_tag",
+						consent_category: "functional",
+						enabled: true,
+						channel_id: 1
+					});
 
-					setAccessKey(event.data.code);
-					setLoggedIn(true);
+					throw { data: data };
 				}
 		});
 	}, []);
-
-	const { script } = useScriptAPI({
-		name: "figpiiscript",
-		description: "figpiiscript",
-		html: `<script id="piiTester" type="text/javascript" async="async" crossorigin="anonymous" src="//tracking-cdn.figpii.com/${accessKey}.js"></script>`,
-		auto_uninstall: true,
-		load_method: "default",
-		location: "head",
-		visibility: "all_pages",
-		kind: "script_tag",
-		consent_category: "functional",
-		enabled: true,
-		channel_id: 1,
-		create: loggedIn
-	});
-
-	if (loggedIn)
-		console.warn(script);
 
 	return (
 		<div className="container">
