@@ -4,9 +4,7 @@ import * as BigCommerce from 'node-bigcommerce';
 import { ApiConfig, QueryParams, SessionContextProps, SessionProps } from '../types';
 import db from './db';
 
-const { API_URL, AUTH_CALLBACK, CLIENT_ID, CLIENT_SECRET, LOGIN_URL } = process.env;
-
-const JWT_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.peyVzReaiXDW_Cb0JrpM-jVHovjdgc75n5aIKgxPyck";
+const { API_URL, AUTH_CALLBACK, CLIENT_ID, CLIENT_SECRET, LOGIN_URL, JWT_KEY } = process.env;
 
 // Used for internal configuration; 3rd party apps may remove
 const apiConfig: ApiConfig = {};
