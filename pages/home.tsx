@@ -9,6 +9,8 @@ const Home = () => {
 	const { store, isLoading } = useStore();
 	const { context } = useSession();
 
+	console.warn(store);
+
 	useEffect(() => {
 		window.addEventListener("message", async (event) => {
 			if (event.origin != "https://www.figpii.com") return;
