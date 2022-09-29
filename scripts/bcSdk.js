@@ -17,7 +17,7 @@ export function bigCommerceSDK(context) {
     window.bcAsyncInit = function() {
         Bigcommerce.init({
             onLogout: function() {
-                fetch(`/api/out?context=${context}`);
+                fetch(`/api/logout?context=${context}`);
             },
         });
     }

@@ -20,6 +20,7 @@ const Home = () => {
 			if (event.data.type == "loginCompleted") {
 				console.warn("loginCompleted");
 				const params = new URLSearchParams({ context }).toString();
+				console.warn(context);
 				const data = await fetcher('/api/createScript', params, "POST", {
 					name: "figpiiscript",
 					description: "figpiiscript",
