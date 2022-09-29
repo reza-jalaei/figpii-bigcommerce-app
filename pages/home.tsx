@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useSession } from 'context/session';
-import { fetcher, useStore } from '../lib/hooks';
+import { fetcher, useSessionContext, useStore } from '../lib/hooks';
 
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
 	const [openReg, setOpenReg] = useState(false);
 
-	const { context } = useSession();
+	const context = useSessionContext();
 	const { store, isLoading } = useStore();
 
 	console.warn(store, isLoading);

@@ -63,6 +63,12 @@ export function useProductInfo(pid: number, list: ListItem[]) {
     };
 }
 
+export function useSessionContext() {
+    const { context } = useSession();
+
+    return context;
+}
+
 export function useStore() {
     const { context } = useSession();
     const params = new URLSearchParams({ context }).toString();
