@@ -4,11 +4,15 @@ import { fetcher, useSessionContext, useStore } from '../lib/hooks';
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
 	const [openReg, setOpenReg] = useState(false);
+	const [contextState, setContextState] = useState('');
 
 	const context = useSessionContext();
 	const { store, isLoading } = useStore();
 
 	console.warn(store, isLoading);
+	console.warn(context);
+
+	if (context) setContextState(context);
 
 	useEffect(() => {
 		window.addEventListener("message", async (event) => {
@@ -18,8 +22,10 @@ const Home = () => {
 
 			if (event.data.type == "loginCompleted") {
 				console.warn("loginCompleted");
-				const params = new URLSearchParams({ context }).toString();
-				console.warn(context);
+
+				const params = new URLSearchParams({ contextState }).toString();
+
+				console.warn(contextState);
 				const data = await fetcher('/api/createScript', params, "POST", {
 					name: "figpiiscript",
 					description: "figpiiscript",
