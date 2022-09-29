@@ -9,7 +9,15 @@ const Home = () => {
 
 	useEffect(() => {
 		window.addEventListener("message", (event) => {
-			throw event;
+			if (event.origin != "https://www.figpii.com") return;
+			
+			switch (event.data.type) {
+				case "loginCompleted":
+					
+					break;
+				default:
+					break;
+			}
 		});
 	}, []);
 

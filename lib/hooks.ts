@@ -73,6 +73,20 @@ export function useStore() {
     }
 }
 
+export function useScriptAPI(query?: QueryParams) {
+    const { context } = useSession();
+    const params = new URLSearchParams({ ...query, context }).toString();
+
+    // Use an array to send multiple arguments to fetcher
+    const { data, error } = useSWR(context ? ['/api/createScript', params] : null, fetcher);
+
+    return {
+        script: data,
+        isLoading: !data && !error,
+        error,
+    };
+}
+
 export const useOrder = (orderId: number) => {
     const { context } = useSession();
     const params = new URLSearchParams({ context }).toString();
