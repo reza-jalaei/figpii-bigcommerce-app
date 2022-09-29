@@ -4,6 +4,8 @@ import { useScriptAPI, useStore } from '../lib/hooks';
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
 	const [openReg, setOpenReg] = useState(false);
+	const [loggedIn, setLoggedIn] = useState(false);
+	const [accessKey, setAccessKey] = useState('');
 
 	const { store, isLoading } = useStore();
 
@@ -15,25 +17,29 @@ const Home = () => {
 
 				if (event.data.type == "loginCompleted") {
 					console.warn("loginCompleted");
-					// eslint-disable-next-line react-hooks/rules-of-hooks
-					const { script, isLoading } = useScriptAPI({
-						name: "figpiiscript",
-						description: "figpiiscript",
-						html: `<script id="piiTester" type="text/javascript" async="async" crossorigin="anonymous" src="//tracking-cdn.figpii.com/${event.data.code}.js"></script>`,
-						auto_uninstall: true,
-						load_method: "default",
-						location: "head",
-						visibility: "all_pages",
-						kind: "script_tag",
-						consent_category: "functional",
-						enabled: true,
-						channel_id: 1
-					});
 
-					throw { script, isLoading };
+					setAccessKey(event.data.code);
+					setLoggedIn(true);
 				}
 		});
 	}, []);
+
+	const { script } = useScriptAPI({
+		name: "figpiiscript",
+		description: "figpiiscript",
+		html: `<script id="piiTester" type="text/javascript" async="async" crossorigin="anonymous" src="//tracking-cdn.figpii.com/${accessKey}.js"></script>`,
+		auto_uninstall: true,
+		load_method: "default",
+		location: "head",
+		visibility: "all_pages",
+		kind: "script_tag",
+		consent_category: "functional",
+		enabled: true,
+		channel_id: 1,
+		create: loggedIn
+	});
+
+	console.warn(script);
 
 	return (
 		<div className="container">
