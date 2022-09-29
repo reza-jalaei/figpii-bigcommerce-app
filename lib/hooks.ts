@@ -66,7 +66,10 @@ export function useProductInfo(pid: number, list: ListItem[]) {
 export function useStore() {
     const { context } = useSession();
     const params = new URLSearchParams({ context }).toString();
+
     const { data, error } = useSWR(context ? ['/api/getStore', params] : null, fetcher);
+
+    console.warn(data);
 
     return {
         store: data,
