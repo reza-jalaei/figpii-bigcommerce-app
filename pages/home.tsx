@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import { fetcher, useSessionContext, useStore } from '../lib/hooks';
 
+let contextGlobal = "";
+
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
 	const [openReg, setOpenReg] = useState(false);
-	const [contextState, setContextState] = useState('');
 
 	const context = useSessionContext();
 	const { store, isLoading } = useStore();
 
-	console.warn(store, isLoading);
-	console.warn(context);
+	if (context) contextGlobal = context;
 
-	if (context) setContextState(context);
+	console.warn(store, isLoading);
 
 	useEffect(() => {
 		window.addEventListener("message", async (event) => {
@@ -23,22 +23,11 @@ const Home = () => {
 			if (event.data.type == "loginCompleted") {
 				console.warn("loginCompleted");
 
-				const params = new URLSearchParams({ contextState }).toString();
+				const params = new URLSearchParams({ contextGlobal }).toString();
 
-				console.warn(contextState);
-				const data = await fetcher('/api/createScript', params, "POST", {
-					name: "figpiiscript",
-					description: "figpiiscript",
-					html: `<script id="piiTester" type="text/javascript" async="async" crossorigin="anonymous" src="//tracking-cdn.figpii.com/${event.data.code}.js"></script>`,
-						auto_uninstall: true,
-					load_method: "default",
-					location: "head",
-					visibility: "all_pages",
-					kind: "script_tag",
-					consent_category: "functional",
-					enabled: true,
-					channel_id: 1
-				});
+				console.warn(contextGlobal);
+
+				const data = await fetcher(`/api/script/${event.data.code}`, params);
 
 				throw { data: data };
 			}

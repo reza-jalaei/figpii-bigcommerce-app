@@ -2,10 +2,8 @@ import useSWR from 'swr';
 import { useSession } from '../context/session';
 import { ErrorProps, ListItem, Order, QueryParams, ShippingAndProductsInfo } from '../types';
 
-export async function fetcher(url: string, query: string, method = "GET", data: any = null) {
-    let res;
-    if (data != null) res = await fetch(`${url}?${query}`, { method: method, body: JSON.stringify(data) });
-    else res = await fetch(`${url}?${query}`);
+export async function fetcher(url: string, query: string) {
+    const res = await fetch(`${url}?${query}`);
 
     // If the status code is not in the range 200-299, throw an error
     if (!res.ok) {
@@ -82,12 +80,12 @@ export function useStore() {
     }
 }
 
-export function useScriptAPI(query?: any) {
+export function useScriptAPI() {
     const { context } = useSession();
     const params = new URLSearchParams({ context }).toString();
 
     // Use an array to send multiple arguments to fetcher
-    const { data, error } = useSWR(context ? ['/api/createScript', params, "POST", query] : null, fetcher);
+    const { data, error } = useSWR(context ? ['/api/scripts/', params] : null, fetcher);
 
     return {
         script: data,
