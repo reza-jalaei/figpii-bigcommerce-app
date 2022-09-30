@@ -13,6 +13,7 @@ const Home = () => {
 	const { script } = useScriptAPI(!scriptUsed ? accessKey : "");
 	if (accessKey && !scriptUsed) scriptUsed = true;
 
+	console.warn(store, isLoading);
 	console.warn(script);
 
 	useEffect(() => {
