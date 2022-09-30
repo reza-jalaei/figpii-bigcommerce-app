@@ -17,12 +17,15 @@ const Home = () => {
 	console.warn(script);
 
 	useEffect(() => {
+		if (window.localStorage.getItem("accessKey") != null) {
+			accessKey = window.localStorage.getItem("accessKey");
+		}
+
 		window.addEventListener("message", (event) => {
 			if (event.origin != "https://www.figpii.com") return;
 
 			if (event.data.type == "loginCompleted") {
-				accessKey = event.data.code;
-				scriptUsed = false;
+				window.localStorage.setItem("accessKey", event.data.code);
 			}
 		});
 	}, []);
