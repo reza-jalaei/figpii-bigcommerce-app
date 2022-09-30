@@ -1,31 +1,34 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+        // eslint-disable-next-line
 import { bigcommerceClient, getSession } from '../../../lib/auth';
 
 export default async function getStore(req: NextApiRequest, res: NextApiResponse) {
     try {
         const {
+         // eslint-disable-next-line
             query: { accessKey },
         } = req;
 
+        // eslint-disable-next-line
         const { accessToken, storeHash } = await getSession(req);
-        const bigcommerce = bigcommerceClient(accessToken, storeHash, "v3");
+        // const bigcommerce = bigcommerceClient(accessToken, storeHash, "v3");
 
         // eslint-disable-next-line 
-        const data = await bigcommerce.post('/content/scripts', {
-            name: "figpiiscript",
-            description: "figpiiscript",
-            html: `<script id="piiTester" type="text/javascript" async="async" crossorigin="anonymous" src="//tracking-cdn.figpii.com/${accessKey}.js"></script>`,
-            auto_uninstall: true,
-            load_method: "default",
-            location: "head",
-            visibility: "all_pages",
-            kind: "script_tag",
-            consent_category: "functional",
-            enabled: true,
-            channel_id: 1
-        });
+        // const data = await bigcommerce.post('/content/scripts', {
+        //    name: "figpiiscript",
+        //    description: "figpiiscript",
+        //    html: `<script id="piiTester" type="text/javascript" async="async" crossorigin="anonymous" src="//tracking-cdn.figpii.com/${accessKey}.js"></script>`,
+        //    auto_uninstall: true,
+        //    load_method: "default",
+        //    location: "head",
+        //    visibility: "all_pages",
+        //    kind: "script_tag",
+        //    consent_category: "functional",
+        //    enabled: true,
+        //    channel_id: 1
+        //});
 
-        res.status(200).json(req);
+        res.status(200).json({ req, accessToken, storeHash });
     } catch (error) {
         const { message, response } = error;
         res.status(response?.status || 500).json({ message });
