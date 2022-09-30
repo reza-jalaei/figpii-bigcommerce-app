@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useScriptAPI, useStore } from '../lib/hooks';
 
 let accessKey = "";
@@ -7,26 +7,35 @@ let scriptUsed = false;
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
 	const [openReg, setOpenReg] = useState(false);
+	const [openDashboard, setOpenDashboard] = useState(false);
 
 	const { store, isLoading } = useStore();
 
 	const { script } = useScriptAPI(!scriptUsed ? accessKey : "");
 	if (accessKey && !scriptUsed) scriptUsed = true;
 
-	console.warn(store, isLoading);
 	console.warn(script);
 
-	useEffect(() => {
-		window.addEventListener("message", async (event) => {
+	const onMessageReceivedFromIframe = useCallback(
+		event => {
 			if (event.origin != "https://www.figpii.com") return;
-			console.warn(event);
 
 			if (event.data.type == "loginCompleted") {
 				accessKey = event.data.code;
 				scriptUsed = false;
+				setOpenDashboard(true);
 			}
-		});
-	}, []);
+		},
+		[openDashboard]
+	);
+
+	useEffect(() => {
+		window.addEventListener("message", onMessageReceivedFromIframe);
+
+		return () =>
+			window.removeEventListener("message", onMessageReceivedFromIframe);
+	}, [onMessageReceivedFromIframe]);
+
 
 	return (
 		<div className="container">
@@ -100,6 +109,12 @@ const Home = () => {
 					`https://www.figpii.com/register?store_type=5949ed&package=STARTER&full_name=${store.first_name}+${store.last_name}&email=${store.admin_email}&org_name=${store.name}&domain_name=${store.domain}`
 				}
 					style={{ width: '100%', height: '100%' }}
+				/>
+			)}
+			{ openDashboard && (
+				<iframe
+					src="https://www.figpii.com/dashboard"
+					style={{ width: "100%", height: "100%" }}
 				/>
 			)}
 		</div>
