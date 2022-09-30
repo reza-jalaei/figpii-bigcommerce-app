@@ -17,7 +17,6 @@ const Home = () => {
 	useEffect(() => {
 		window.addEventListener("message", async (event) => {
 			if (event.origin != "https://www.figpii.com") return;
-
 			console.warn(event);
 
 			if (event.data.type == "loginCompleted") {
