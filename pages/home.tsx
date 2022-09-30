@@ -19,6 +19,7 @@ const Home = () => {
 	useEffect(() => {
 		if (window.localStorage.getItem("accessKey") != null) {
 			accessKey = window.localStorage.getItem("accessKey");
+			console.warn(window.localStorage.getItem("accessKey"));
 		}
 
 		window.addEventListener("message", (event) => {
@@ -26,6 +27,7 @@ const Home = () => {
 
 			if (event.data.type == "loginCompleted") {
 				window.localStorage.setItem("accessKey", event.data.code);
+				console.warn(window.localStorage.getItem("accessKey"));
 			}
 		});
 	}, []);
