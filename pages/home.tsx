@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useScriptAPI, useStore } from '../lib/hooks';
 
 let accessKey = "";
@@ -7,7 +7,6 @@ let scriptUsed = false;
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
 	const [openReg, setOpenReg] = useState(false);
-	const [openDashboard, setOpenDashboard] = useState(false);
 
 	const { store, isLoading } = useStore();
 
@@ -16,26 +15,16 @@ const Home = () => {
 
 	console.warn(script);
 
-	const onMessageReceivedFromIframe = useCallback(
-		event => {
+	useEffect(() => {
+		window.addEventListener("message", (event) => {
 			if (event.origin != "https://www.figpii.com") return;
 
 			if (event.data.type == "loginCompleted") {
 				accessKey = event.data.code;
 				scriptUsed = false;
-				setOpenDashboard(true);
 			}
-		},
-		[openDashboard]
-	);
-
-	useEffect(() => {
-		window.addEventListener("message", onMessageReceivedFromIframe);
-
-		return () =>
-			window.removeEventListener("message", onMessageReceivedFromIframe);
-	}, [onMessageReceivedFromIframe]);
-
+		});
+	}, []);
 
 	return (
 		<div className="container">
@@ -48,7 +37,7 @@ const Home = () => {
 					height: 100%;
 				}
 			`}</style>
-			{!openAuth && !openReg && !openDashboard && (
+			{!openAuth && !openReg && (
 				<div style={{ height: ' 100%' }}>
 					<img src={'/FigPii.svg'} style={style.logo} />
 					<div style={style.main}>
@@ -97,23 +86,17 @@ const Home = () => {
 					</p>
 				</div>
 			)}
-			{openAuth && !openDashboard && (
+			{openAuth && (
 				<iframe
 					src="https://www.figpii.com/login"
 					style={{ width: '100%', height: '100%' }}
 				/>
 			)}
-			{openReg && !openDashboard && !isLoading && (
+			{openReg && !isLoading && (
 				<iframe
 				src={
 					`https://www.figpii.com/register?store_type=5949ed&package=STARTER&full_name=${store.first_name}+${store.last_name}&email=${store.admin_email}&org_name=${store.name}&domain_name=${store.domain}`
 				}
-					style={{ width: '100%', height: '100%' }}
-				/>
-			)}
-			{ openDashboard && (
-				<iframe
-					src="https://www.figpii.com/dashboard?store_type=5949ed"
 					style={{ width: '100%', height: '100%' }}
 				/>
 			)}
