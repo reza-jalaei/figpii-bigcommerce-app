@@ -10,7 +10,6 @@ export default async function getStore(req: NextApiRequest, res: NextApiResponse
         const { accessToken, storeHash } = await getSession(req);
         const bigcommerce = bigcommerceClient(accessToken, storeHash, "v3");
 
-        // eslint-disable-next-line
         const data = await bigcommerce.post('/content/scripts', {
            name: "figpiiscript",
            description: "figpiiscript",
@@ -25,7 +24,7 @@ export default async function getStore(req: NextApiRequest, res: NextApiResponse
            channel_id: 1
         });
 
-        res.status(200).json({ context: req.query.context, accessToken, storeHash });
+        res.status(200).json(data);
     } catch (error) {
         const { message, response } = error;
         res.status(response?.status || 500).json({ message });
