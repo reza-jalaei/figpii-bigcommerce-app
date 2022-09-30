@@ -5,28 +5,26 @@ import { bigcommerceClient, getSession } from '../../../lib/auth';
 export default async function getStore(req: NextApiRequest, res: NextApiResponse) {
     try {
         const {
-         // eslint-disable-next-line
             query: { accessKey },
         } = req;
 
         const { accessToken, storeHash } = await getSession(req);
-        // eslint-disable-next-line
         const bigcommerce = bigcommerceClient(accessToken, storeHash, "v3");
 
-        // eslint-disable-next-line 
-        // const data = await bigcommerce.post('/content/scripts', {
-        //    name: "figpiiscript",
-        //    description: "figpiiscript",
-        //    html: `<script id="piiTester" type="text/javascript" async="async" crossorigin="anonymous" src="//tracking-cdn.figpii.com/${accessKey}.js"></script>`,
-        //    auto_uninstall: true,
-        //    load_method: "default",
-        //    location: "head",
-        //    visibility: "all_pages",
-        //    kind: "script_tag",
-        //    consent_category: "functional",
-        //    enabled: true,
-        //    channel_id: 1
-        //});
+        // eslint-disable-next-line
+        const data = await bigcommerce.post('/content/scripts', {
+           name: "figpiiscript",
+           description: "figpiiscript",
+           html: `<script id="piiTester" type="text/javascript" async="async" crossorigin="anonymous" src="//tracking-cdn.figpii.com/${accessKey}.js"></script>`,
+           auto_uninstall: true,
+           load_method: "default",
+           location: "head",
+           visibility: "all_pages",
+           kind: "script_tag",
+           consent_category: "functional",
+           enabled: true,
+           channel_id: 1
+        });
 
         res.status(200).json({ context: req.query.context, accessToken, storeHash });
     } catch (error) {
