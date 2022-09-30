@@ -9,9 +9,9 @@ export default async function getStore(req: NextApiRequest, res: NextApiResponse
             query: { accessKey },
         } = req;
 
-        // eslint-disable-next-line
         const { accessToken, storeHash } = await getSession(req);
-        // const bigcommerce = bigcommerceClient(accessToken, storeHash, "v3");
+        // eslint-disable-next-line
+        const bigcommerce = bigcommerceClient(accessToken, storeHash, "v3");
 
         // eslint-disable-next-line 
         // const data = await bigcommerce.post('/content/scripts', {
