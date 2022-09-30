@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useScriptAPI, useStore } from '../lib/hooks';
 
 let accessKey = "";
-let scriptUsed = false;
 
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
@@ -10,8 +9,7 @@ const Home = () => {
 
 	const { store, isLoading } = useStore();
 
-	const { script } = useScriptAPI(!scriptUsed ? accessKey : "no_key");
-	if (accessKey && !scriptUsed) scriptUsed = true;
+	const { script } = useScriptAPI(accessKey);
 
 	console.warn(store, isLoading);
 	console.warn(script, accessKey);
