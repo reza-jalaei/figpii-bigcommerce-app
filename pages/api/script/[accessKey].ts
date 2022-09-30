@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-        // eslint-disable-next-line
 import { bigcommerceClient, getSession } from '../../../lib/auth';
 
 export default async function getStore(req: NextApiRequest, res: NextApiResponse) {
