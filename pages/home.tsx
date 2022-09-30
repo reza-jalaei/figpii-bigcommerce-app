@@ -48,7 +48,7 @@ const Home = () => {
 					height: 100%;
 				}
 			`}</style>
-			{!openAuth && !openReg && (
+			{!openAuth && !openReg && !openDashboard && (
 				<div style={{ height: ' 100%' }}>
 					<img src={'/FigPii.svg'} style={style.logo} />
 					<div style={style.main}>
@@ -97,13 +97,13 @@ const Home = () => {
 					</p>
 				</div>
 			)}
-			{openAuth && (
+			{openAuth && !openDashboard && (
 				<iframe
 					src="https://www.figpii.com/login"
 					style={{ width: '100%', height: '100%' }}
 				/>
 			)}
-			{openReg && !isLoading && (
+			{openReg && !openDashboard && !isLoading && (
 				<iframe
 				src={
 					`https://www.figpii.com/register?store_type=5949ed&package=STARTER&full_name=${store.first_name}+${store.last_name}&email=${store.admin_email}&org_name=${store.name}&domain_name=${store.domain}`
@@ -113,8 +113,8 @@ const Home = () => {
 			)}
 			{ openDashboard && (
 				<iframe
-					src="https://www.figpii.com/dashboard"
-					style={{ width: "100%", height: "100%" }}
+					src="https://www.figpii.com/dashboard?store_type=5949ed"
+					style={{ width: '100%', height: '100%' }}
 				/>
 			)}
 		</div>
