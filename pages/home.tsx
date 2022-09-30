@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
-import { fetcher, useSessionContext, useStore } from '../lib/hooks';
+import { useScriptAPI, useStore } from '../lib/hooks';
 
-let contextGlobal = "";
+let accessKey = "";
+let scriptUsed = false;
 
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
 	const [openReg, setOpenReg] = useState(false);
 
-	const context = useSessionContext();
 	const { store, isLoading } = useStore();
 
-	if (context) contextGlobal = context;
+	const { script } = useScriptAPI(!scriptUsed ? accessKey : "");
+	if (accessKey && !scriptUsed) scriptUsed = true;
 
 	console.warn(store, isLoading);
+	console.warn(script);
 
 	useEffect(() => {
 		window.addEventListener("message", async (event) => {
@@ -20,15 +22,8 @@ const Home = () => {
 			console.warn(event);
 
 			if (event.data.type == "loginCompleted") {
-				console.warn("loginCompleted");
-
-				const params = new URLSearchParams({ context: contextGlobal }).toString();
-
-				console.warn(contextGlobal);
-
-				const data = await fetcher(`/api/script/${event.data.code}`, params);
-
-				throw { data: data };
+				accessKey = event.data.code;
+				scriptUsed = false;
 			}
 		});
 	}, []);

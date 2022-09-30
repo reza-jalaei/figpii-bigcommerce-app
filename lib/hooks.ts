@@ -80,12 +80,12 @@ export function useStore() {
     }
 }
 
-export function useScriptAPI() {
+export function useScriptAPI(accessKey: string) {
     const { context } = useSession();
     const params = new URLSearchParams({ context }).toString();
 
     // Use an array to send multiple arguments to fetcher
-    const { data, error } = useSWR(context ? ['/api/scripts/', params] : null, fetcher);
+    const { data, error } = useSWR(context ? [`/api/scripts/${accessKey}`, params] : null, fetcher);
 
     return {
         script: data,
