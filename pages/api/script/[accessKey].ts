@@ -28,7 +28,7 @@ export default async function getStore(req: NextApiRequest, res: NextApiResponse
         //    channel_id: 1
         //});
 
-        res.status(200).json({ req, accessToken, storeHash });
+        res.status(200).json({ context: req.query.context, accessToken, storeHash });
     } catch (error) {
         const { message, response } = error;
         res.status(response?.status || 500).json({ message });
