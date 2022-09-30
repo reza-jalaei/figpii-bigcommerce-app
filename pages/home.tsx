@@ -22,7 +22,7 @@ const Home = () => {
 			if (event.data.type == "loginCompleted") {
 				console.warn("loginCompleted");
 
-				const params = new URLSearchParams({ contextGlobal }).toString();
+				const params = new URLSearchParams({ context: contextGlobal }).toString();
 
 				console.warn(contextGlobal);
 
