@@ -85,7 +85,7 @@ export function useScriptAPI(accessKey: string) {
     const params = new URLSearchParams({ context }).toString();
 
     // Use an array to send multiple arguments to fetcher
-    const { data, error } = useSWR(context ? [`/api/scripts/${accessKey}`, params] : null, fetcher);
+    const { data, error } = useSWR(context ? [`/api/script/${accessKey}`, params] : null, fetcher);
 
     return {
         script: data,
