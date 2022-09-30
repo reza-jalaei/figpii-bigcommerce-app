@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useScriptAPI, useStore } from '../lib/hooks';
 
 let accessKey = "";
+let scriptUsed = false;
 
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
@@ -9,23 +10,18 @@ const Home = () => {
 
 	const { store, isLoading } = useStore();
 
-	const { script } = useScriptAPI(accessKey);
+	const { script } = useScriptAPI(!scriptUsed ? accessKey : "");
+	if (accessKey && !scriptUsed) scriptUsed = true;
 
-	console.warn(store, isLoading);
-	console.warn(script, accessKey);
+	console.warn(script);
 
 	useEffect(() => {
-		if (window.localStorage.getItem("accessKey") != null) {
-			accessKey = window.localStorage.getItem("accessKey");
-			console.warn(accessKey);
-		}
-
 		window.addEventListener("message", (event) => {
 			if (event.origin != "https://www.figpii.com") return;
 
 			if (event.data.type == "loginCompleted") {
-				window.localStorage.setItem("accessKey", event.data.code);
-				console.warn(window.localStorage.getItem("accessKey"));
+				accessKey = event.data.code;
+				scriptUsed = false;
 			}
 		});
 	}, []);
