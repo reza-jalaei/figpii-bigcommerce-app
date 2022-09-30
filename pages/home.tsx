@@ -10,16 +10,16 @@ const Home = () => {
 
 	const { store, isLoading } = useStore();
 
-	const { script } = useScriptAPI(!scriptUsed ? accessKey : "");
+	const { script } = useScriptAPI(!scriptUsed ? accessKey : "no_key");
 	if (accessKey && !scriptUsed) scriptUsed = true;
 
 	console.warn(store, isLoading);
-	console.warn(script);
+	console.warn(script, accessKey);
 
 	useEffect(() => {
 		if (window.localStorage.getItem("accessKey") != null) {
 			accessKey = window.localStorage.getItem("accessKey");
-			console.warn(window.localStorage.getItem("accessKey"));
+			console.warn(accessKey);
 		}
 
 		window.addEventListener("message", (event) => {
