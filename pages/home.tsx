@@ -16,7 +16,7 @@ const Home = () => {
 		window.addEventListener("message", async (event) => {
 			if (event.origin != "https://www.figpii.com") return;
 
-			if (event.data.type == "loginCompleted") {
+			if (event.data.type == "loginCompleted" || event.data.type == "registrationCompleted") {
 
 				const params = new URLSearchParams({ context: contextGlobal }).toString();
 
