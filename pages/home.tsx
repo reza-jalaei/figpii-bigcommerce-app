@@ -12,23 +12,15 @@ const Home = () => {
 
 	if (context) contextGlobal = context;
 
-	console.warn(store, isLoading);
-
 	useEffect(() => {
 		window.addEventListener("message", async (event) => {
 			if (event.origin != "https://www.figpii.com") return;
-			console.warn(event);
 
 			if (event.data.type == "loginCompleted") {
-				console.warn("loginCompleted");
 
 				const params = new URLSearchParams({ context: contextGlobal }).toString();
 
-				console.warn(contextGlobal);
-
-				const data = await fetcher(`/api/script/${event.data.code}`, params);
-
-				console.warn(data);
+				await fetcher(`/api/script/${event.data.code}`, params);
 			}
 		});
 	}, []);
