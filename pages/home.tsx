@@ -1,27 +1,34 @@
 import { useEffect, useState } from 'react';
-import { useScriptAPI, useStore } from '../lib/hooks';
+import { fetcher, useSessionContext, useStore } from '../lib/hooks';
 
-let accessKey = "";
-let scriptUsed = false;
+let contextGlobal = "";
 
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
 	const [openReg, setOpenReg] = useState(false);
 
+	const context = useSessionContext();
 	const { store, isLoading } = useStore();
 
-	const { script } = useScriptAPI(!scriptUsed ? accessKey : "");
-	if (accessKey && !scriptUsed) scriptUsed = true;
+	if (context) contextGlobal = context;
 
-	console.warn(script);
+	console.warn(store, isLoading);
 
 	useEffect(() => {
-		window.addEventListener("message", (event) => {
+		window.addEventListener("message", async (event) => {
 			if (event.origin != "https://www.figpii.com") return;
+			console.warn(event);
 
-				if (event.data.type == "loginCompleted" || event.data.type == "registrationCompleted") {
-				accessKey = event.data.code;
-				scriptUsed = false;
+			if (event.data.type == "loginCompleted") {
+				console.warn("loginCompleted");
+
+				const params = new URLSearchParams({ context: contextGlobal }).toString();
+
+				console.warn(contextGlobal);
+
+				const data = await fetcher(`/api/script/${event.data.code}`, params);
+
+				console.warn(data);
 			}
 		});
 	}, []);
