@@ -87,14 +87,14 @@ const Home = () => {
 			)}
 			{openAuth && (
 				<iframe
-					src="https://www.figpii.com/login"
+					src="https://erce-staging.figpii.com/login"
 					style={{ width: '100%', height: '100%' }}
 				/>
 			)}
 			{openReg && !isLoading && (
 				<iframe
 				src={
-					`https://www.figpii.com/register?store_type=5949ed&package=STARTER&full_name=${store.first_name}+${store.last_name}&email=${store.admin_email}&org_name=${store.name}&domain_name=${store.domain}`
+					`https://erce-staging.figpii.com/register?store_type=5949ed&package=STARTER&full_name=${store.first_name}+${store.last_name}&email=${store.admin_email}&org_name=${store.name}&domain_name=${store.domain}`
 				}
 					style={{ width: '100%', height: '100%' }}
 				/>
@@ -127,6 +127,7 @@ const style = {
 		borderRadius: '4px',
 		color: '#FFFFFF',
 		marginRight: '22px',
+		cursor: 'pointer',
 	},
 	buttonAuth: {
 		width: '267px',
@@ -137,6 +138,7 @@ const style = {
 		border: '1px solid #51266D',
 		borderRadius: '4px',
 		color: '#51266D',
+		cursor: 'pointer',
 	},
 	imageGroup: {
 		display: 'flex',
