@@ -87,7 +87,7 @@ const Home = () => {
 			)}
 			{openAuth && (
 				<iframe
-					src="https://reza-staging.figpii.com/app_debug.php/login"
+					src="https://reza-staging.figpii.com/app_debug.php/dashboard"
 					style={{ width: '100%', height: '100%' }}
 				/>
 			)}
