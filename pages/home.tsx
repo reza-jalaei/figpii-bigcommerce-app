@@ -36,6 +36,9 @@ const Home = () => {
 				div#__next > div {
 					height: 100%;
 				}
+				body {
+				overflow: hidden;
+				}
 			`}</style>
 			{!openAuth && !openReg && (
 				<div style={{ height: ' 100%' }}>
