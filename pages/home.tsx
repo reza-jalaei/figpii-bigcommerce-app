@@ -87,14 +87,14 @@ const Home = () => {
 			)}
 			{openAuth && (
 				<iframe
-					src="https://erce-staging.figpii.com/login"
+					src="https://reza-staging.figpii.com/app_debug.php/login"
 					style={{ width: '100%', height: '100%' }}
 				/>
 			)}
 			{openReg && !isLoading && (
 				<iframe
 				src={
-					`https://erce-staging.figpii.com/register?store_type=5949ed&package=STARTER&full_name=${store.first_name}+${store.last_name}&email=${store.admin_email}&org_name=${store.name}&domain_name=${store.domain}`
+					`https://reza-staging.figpii.com/app_debug.php/register?store_type=5949ed&package=STARTER&full_name=${store.first_name}+${store.last_name}&email=${store.admin_email}&org_name=${store.name}&domain_name=${store.domain}`
 				}
 					style={{ width: '100%', height: '100%' }}
 				/>
