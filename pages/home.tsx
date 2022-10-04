@@ -39,6 +39,9 @@ const Home = () => {
 				body {
 				overflow: hidden;
 				}
+				iframe {
+				border: none;
+				}
 			`}</style>
 			{!openAuth && !openReg && (
 				<div style={{ height: ' 100%' }}>
