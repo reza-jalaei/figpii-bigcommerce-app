@@ -22,8 +22,6 @@ const Home = () => {
 				const params = new URLSearchParams({ context: contextGlobal }).toString();
 
 				await fetcher(`/api/script/${event.data.code}`, params);
-
-				setOpenReg(true)
 			}
 		});
 	}, []);

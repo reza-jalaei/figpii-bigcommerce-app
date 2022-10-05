@@ -23,7 +23,7 @@ export default async function getStore(req: NextApiRequest, res: NextApiResponse
            enabled: true,
            channel_id: 1
         });
-
+        window.location.reload();
         await res.status(200).json(data);
     } catch (error) {
         const { message, response } = error;
