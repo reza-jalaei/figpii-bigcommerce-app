@@ -17,12 +17,12 @@ const Home = () => {
 	useEffect(() => {
 		window.addEventListener("message", async (event) => {
 			if (event.origin != figpiiDomain) {
-				console.log(event.origin);
+				window.console.log(event.origin);
 				return;
 			}
 
 			if (event.data.type == "loginCompleted" || event.data.type == "registrationCompleted") {
-				console.log(event.data)
+				window.console.log(event.data)
 
 				const params = new URLSearchParams({ context: contextGlobal }).toString();
 
