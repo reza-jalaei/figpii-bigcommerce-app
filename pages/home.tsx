@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { fetcher, useSessionContext, useStore } from '../lib/hooks';
-import { bigcommerceClient, getSession } from '../../lib/auth';
+import {useEffect, useState} from 'react';
+import {fetcher, useSessionContext, useStore} from '../lib/hooks';
+import {getSession} from '../../lib/auth';
 
 import {getStoreAccessKey} from "@lib/dbs/mysql";
 
@@ -8,21 +8,27 @@ let contextGlobal = "";
 
 const figpiiDomain = "https://reza-staging.figpii.com";
 
-const Home = async () => {
+export async function getStoreStatus() {
+	const {storeHash} = await getSession(req);
+
+	return await getStoreAccessKey(storeHash);
+}
+
+const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
 	const [openReg, setOpenReg] = useState(false);
-	const [openDashboard, setDashboard] = useState(false);
+	const [isRegistered, setRegistered] = useState(false);
 
 	const context = useSessionContext();
-	const {store, isLoading} = useStore();
+	const { store, isLoading } = useStore();
 
 	if (context) contextGlobal = context;
 
-	const {accessToken, storeHash} = await getSession(req);
+	const isUserRegistered = getStoreStatus();
 
-	const isDashboard = await getStoreAccessKey(storeHash);
-
-	window.console.log(isDashboard);
+	if (isUserRegistered) {
+		setRegistered(true)
+	}
 
 	useEffect(() => {
 		window.console.log("hello event listener")
@@ -37,7 +43,7 @@ const Home = async () => {
 			if (event.data.type == "loginCompleted" || event.data.type == "registrationCompleted") {
 				window.console.log("Successful match ", event.data)
 
-				const params = new URLSearchParams({context: contextGlobal}).toString();
+				const params = new URLSearchParams({ context: contextGlobal }).toString();
 
 				await fetcher(`/api/script/${event.data.code}`, params);
 			}
@@ -55,9 +61,12 @@ const Home = async () => {
 					height: 100%;
 				}
 			`}</style>
-			{!openAuth && !openReg && (
-				<div style={{height: ' 100%'}}>
-					<img src={'/FigPii.svg'} style={style.logo}/>
+			{isRegistered && (
+				<h1>Store is registered</h1>
+			)}
+			{!openAuth && !openReg && !isRegistered && (
+				<div style={{ height: ' 100%' }}>
+					<img src={'/FigPii.svg'} style={style.logo} />
 					<div style={style.main}>
 						<div>
 							<h1>Connect your FigPii account</h1>
@@ -81,7 +90,7 @@ const Home = async () => {
 							>
 								{'Connect Existing Account'}
 							</button>
-							<p style={{color: '#421C59', textAlign: 'center'}}>
+							<p style={{ color: '#421C59', textAlign: 'center' }}>
 								Sign up for a <b>free 14-day trial</b>. All features unlocked.
 							</p>
 						</div>
@@ -92,11 +101,11 @@ const Home = async () => {
 								marginLeft: '90px',
 							}}
 						>
-							<img src={'/image18.png'}/>
-							<img src={'/Group378.png'}/>
+							<img src={'/image18.png'} />
+							<img src={'/Group378.png'} />
 						</div>
 					</div>
-					<p style={{textAlign: 'center'}}>
+					<p style={{ textAlign: 'center' }}>
 						Need help? Send us an email at
 						<span style={style.footerText}> support@figpii.com </span>or visit
 						our
@@ -107,7 +116,7 @@ const Home = async () => {
 			{openAuth && (
 				<iframe
 					src={`${figpiiDomain}/app_debug.php/apps/login?store_type=5949ed&store_name=${store.domain}`}
-					style={{width: '100%', height: '100%'}}
+					style={{ width: '100%', height: '100%' }}
 				/>
 			)}
 			{openReg && !isLoading && (
@@ -115,7 +124,7 @@ const Home = async () => {
 					src={
 						`${figpiiDomain}/app_debug.php/register?store_type=5949ed&package=STARTER&full_name=${store.first_name}+${store.last_name}&email=${store.admin_email}&org_name=${store.name}&domain_name=${store.domain}`
 					}
-					style={{width: '100%', height: '100%'}}
+					style={{ width: '100%', height: '100%' }}
 				/>
 			)}
 		</div>
