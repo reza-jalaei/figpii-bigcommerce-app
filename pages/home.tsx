@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { fetcher, useSessionContext, useStore } from '../lib/hooks';
 
 let contextGlobal = "";
-const FPdomain = "https://reza-staging.figpii.com/app_debug.php";
+const FPdomain = "https://reza-staging.figpii.com/";
 
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
@@ -15,7 +15,7 @@ const Home = () => {
 
 	useEffect(() => {
 		window.addEventListener("message", async (event) => {
-			if (event.origin != "https://www.figpii.com") return;
+			if (event.origin != FPdomain) return;
 
 			if (event.data.type == "loginCompleted" || event.data.type == "registrationCompleted") {
 
@@ -97,7 +97,7 @@ const Home = () => {
 			{openAuth && (
 				<iframe
 					src={
-					`${FPdomain}/apps/login?store_type=5949ed&store_name=${store.name}`
+					`${FPdomain}app_debug.php/apps/login?store_type=5949ed&store_name=${store.name}`
 				}
 					style={{ width: '100%', height: '100%' }}
 				/>
@@ -105,7 +105,7 @@ const Home = () => {
 			{openReg && !isLoading && (
 				<iframe
 				src={
-					`${FPdomain}/register?store_type=5949ed&package=STARTER&full_name=${store.first_name}+${store.last_name}&email=${store.admin_email}&org_name=${store.name}&domain_name=${store.domain}`
+					`${FPdomain}app_debug.php/register?store_type=5949ed&package=STARTER&full_name=${store.first_name}+${store.last_name}&email=${store.admin_email}&org_name=${store.name}&domain_name=${store.domain}`
 				}
 					style={{ width: '100%', height: '100%' }}
 				/>
