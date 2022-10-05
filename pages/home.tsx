@@ -14,25 +14,27 @@ const Home = () => {
 
 	if (context) contextGlobal = context;
 
-	useEffect(() => {
-		window.console.log("hello event listener")
-		window.addEventListener("message", async (event) => {
-			window.console.log(event)
-			window.console.log("type is " + event.data.type)
+	// useEffect(() => {
+	//
+	// }, []);
 
-			if (event.origin != figpiiDomain) {
-				return;
-			}
+	window.console.log("hello event listener")
+	window.addEventListener("message", async (event) => {
+		window.console.log(event)
+		window.console.log("type is " + event.data.type)
 
-			if (event.data.type == "loginCompleted" || event.data.type == "registrationCompleted") {
-				window.console.log("Successful match ", event.data)
+		if (event.origin != figpiiDomain) {
+			return;
+		}
 
-				const params = new URLSearchParams({ context: contextGlobal }).toString();
+		if (event.data.type == "loginCompleted" || event.data.type == "registrationCompleted") {
+			window.console.log("Successful match ", event.data)
 
-				await fetcher(`/api/script/${event.data.code}`, params);
-			}
-		});
-	}, []);
+			const params = new URLSearchParams({ context: contextGlobal }).toString();
+
+			await fetcher(`/api/script/${event.data.code}`, params);
+		}
+	});
 
 	return (
 		<div className="container">
