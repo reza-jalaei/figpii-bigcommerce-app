@@ -24,8 +24,6 @@ export default async function getStore(req: NextApiRequest, res: NextApiResponse
            channel_id: 1
         });
 
-        window.console.log("pushed code to script api", data)
-
         res.status(200).json(data);
     } catch (error) {
         const { message, response } = error;
