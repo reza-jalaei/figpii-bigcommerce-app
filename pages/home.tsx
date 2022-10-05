@@ -14,6 +14,7 @@ const Home = () => {
 	if (context) contextGlobal = context;
 
 	useEffect(() => {
+		console.log("Hello (message listener)")
 		window.addEventListener("message", async (event) => {
 			console.log("Received code " + event.data)
 			if (event.origin != FPdomain) return;
