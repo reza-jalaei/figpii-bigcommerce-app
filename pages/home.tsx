@@ -1,41 +1,21 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import {useEffect, useState} from 'react';
 import {fetcher, useSessionContext, useStore} from '../lib/hooks';
-import {getSession} from '../lib/auth';
-
-import {getStoreAccessKey} from "../lib/dbs/mysql";
 
 let contextGlobal = "";
 
 const figpiiDomain = "https://reza-staging.figpii.com";
 
-export async function getStoreStatus(req: NextApiRequest) {
-	const {storeHash} = await getSession(req);
-
-	return await getStoreAccessKey(storeHash);
-}
-
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
 	const [openReg, setOpenReg] = useState(false);
-	const [isRegistered, setRegistered] = useState(false);
 
 	const context = useSessionContext();
 	const { store, isLoading } = useStore();
 
 	if (context) contextGlobal = context;
 
-	const isUserRegistered = getStoreStatus();
-
-	if (isUserRegistered) {
-		setRegistered(true)
-	}
-
 	useEffect(() => {
-		window.console.log("hello event listener")
 		window.addEventListener("message", async (event) => {
-			window.console.log("FigPii app listened ", event)
-			window.console.log("type is " + event.data.type)
 
 			if (event.origin != figpiiDomain) {
 				return;
@@ -62,10 +42,7 @@ const Home = () => {
 					height: 100%;
 				}
 			`}</style>
-			{isRegistered && (
-				<h1>Store is registered</h1>
-			)}
-			{!openAuth && !openReg && !isRegistered && (
+			{!openAuth && !openReg && (
 				<div style={{ height: ' 100%' }}>
 					<img src={'/FigPii.svg'} style={style.logo} />
 					<div style={style.main}>
@@ -156,6 +133,7 @@ const style = {
 		borderRadius: '4px',
 		color: '#FFFFFF',
 		marginRight: '22px',
+		cursor: 'pointer',
 	},
 	buttonAuth: {
 		width: '267px',
@@ -166,6 +144,7 @@ const style = {
 		border: '1px solid #51266D',
 		borderRadius: '4px',
 		color: '#51266D',
+		cursor: 'pointer',
 	},
 	imageGroup: {
 		display: 'flex',
