@@ -95,7 +95,7 @@ const Home = () => {
 			{openAuth && (
 				<iframe
 					src={
-					`${FPdomain}/apps/login?store_type=5949ed`
+					`${FPdomain}/apps/login?store_type=5949ed&store_name=${store.name}`
 				}
 					style={{ width: '100%', height: '100%' }}
 				/>
