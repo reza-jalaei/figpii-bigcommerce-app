@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import {setStoreAccessKey} from "../../../lib/dbs/mysql";
 import { bigcommerceClient, getSession } from '../../../lib/auth';
-import {setStoreAccessKey} from "@lib/dbs/mysql";
 
 export default async function getStore(req: NextApiRequest, res: NextApiResponse) {
     try {
