@@ -39,7 +39,7 @@ export async function setStore(session: SessionProps) {
 export async function setStoreAccessKey(storeHash, accessKey) {
     if (!storeHash) return null;
 
-    await query(`UPDATE stores SET accessKey = '${accessKey}' WHERE storeHash = ${storeHash}`);
+    await query(`UPDATE stores SET accessKey = '${accessKey}' WHERE storeHash = '${storeHash}'`);
 }
 
 // Use setStoreUser for storing store specific variables
