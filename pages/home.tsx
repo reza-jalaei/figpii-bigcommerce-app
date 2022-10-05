@@ -18,13 +18,14 @@ const Home = () => {
 		window.console.log("hello event listener")
 		window.addEventListener("message", async (event) => {
 			window.console.log(event)
+			window.console.log("type is " + event.data.type)
 
 			if (event.origin != figpiiDomain) {
 				return;
 			}
 
 			if (event.data.type == "loginCompleted" || event.data.type == "registrationCompleted") {
-				window.console.log(event.data)
+				window.console.log("Successful match ", event.data)
 
 				const params = new URLSearchParams({ context: contextGlobal }).toString();
 
