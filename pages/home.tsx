@@ -1,3 +1,4 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import {useEffect, useState} from 'react';
 import {fetcher, useSessionContext, useStore} from '../lib/hooks';
 import {getSession} from '../lib/auth';
@@ -8,7 +9,7 @@ let contextGlobal = "";
 
 const figpiiDomain = "https://reza-staging.figpii.com";
 
-export async function getStoreStatus() {
+export async function getStoreStatus(req: NextApiRequest) {
 	const {storeHash} = await getSession(req);
 
 	return await getStoreAccessKey(storeHash);
