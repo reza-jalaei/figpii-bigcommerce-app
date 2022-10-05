@@ -17,7 +17,6 @@ const Home = () => {
 	useEffect(() => {
 		window.addEventListener("message", async (event) => {
 			if (event.origin != figpiiDomain) {
-				window.console.log(event.origin);
 				return;
 			}
 
