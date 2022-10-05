@@ -15,7 +15,10 @@ const Home = () => {
 	if (context) contextGlobal = context;
 
 	useEffect(() => {
+		window.console.log("hello event listener")
 		window.addEventListener("message", async (event) => {
+			window.console.log(event)
+
 			if (event.origin != figpiiDomain) {
 				return;
 			}
