@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { fetcher, useSessionContext, useStore } from '../lib/hooks';
 
 let contextGlobal = "";
-const FPdomain = "https://reza-staging.figpii.com/";
+
+const figpiiDomain = "https://reza-staging.figpii.com/";
 
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
@@ -14,17 +15,18 @@ const Home = () => {
 	if (context) contextGlobal = context;
 
 	useEffect(() => {
-		console.log("Hello (message listener)")
 		window.addEventListener("message", async (event) => {
-			console.log("Received code " + event.data)
-			if (event.origin != FPdomain) return;
+			if (event.origin != figpiiDomain) {
+				console.log(event.origin);
+				return;
+			}
 
 			if (event.data.type == "loginCompleted" || event.data.type == "registrationCompleted") {
+				console.log(event.data)
 
 				const params = new URLSearchParams({ context: contextGlobal }).toString();
 
 				await fetcher(`/api/script/${event.data.code}`, params);
-
 			}
 		});
 	}, []);
@@ -38,12 +40,6 @@ const Home = () => {
 				div#__next,
 				div#__next > div {
 					height: 100%;
-				}
-				body {
-				overflow: hidden;
-				}
-				iframe {
-				border: none;
 				}
 			`}</style>
 			{!openAuth && !openReg && (
@@ -97,17 +93,15 @@ const Home = () => {
 			)}
 			{openAuth && (
 				<iframe
-					src={
-					`${FPdomain}app_debug.php/apps/login?store_type=5949ed&store_name=${store.name}`
-				}
+					src={`${figpiiDomain}app_debug.php/apps/login?store_type=5949ed&store_name=${store.domain}`}
 					style={{ width: '100%', height: '100%' }}
 				/>
 			)}
 			{openReg && !isLoading && (
 				<iframe
-				src={
-					`${FPdomain}app_debug.php/register?store_type=5949ed&package=STARTER&full_name=${store.first_name}+${store.last_name}&email=${store.admin_email}&org_name=${store.name}&domain_name=${store.domain}`
-				}
+					src={
+						`${figpiiDomain}app_debug.php/register?store_type=5949ed&package=STARTER&full_name=${store.first_name}+${store.last_name}&email=${store.admin_email}&org_name=${store.name}&domain_name=${store.domain}`
+					}
 					style={{ width: '100%', height: '100%' }}
 				/>
 			)}
@@ -139,7 +133,6 @@ const style = {
 		borderRadius: '4px',
 		color: '#FFFFFF',
 		marginRight: '22px',
-		cursor: 'pointer',
 	},
 	buttonAuth: {
 		width: '267px',
@@ -150,7 +143,6 @@ const style = {
 		border: '1px solid #51266D',
 		borderRadius: '4px',
 		color: '#51266D',
-		cursor: 'pointer',
 	},
 	imageGroup: {
 		display: 'flex',
