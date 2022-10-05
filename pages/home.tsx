@@ -15,6 +15,7 @@ const Home = () => {
 
 	useEffect(() => {
 		window.addEventListener("message", async (event) => {
+			console.log("Received code " + event.data)
 			if (event.origin != FPdomain) return;
 
 			if (event.data.type == "loginCompleted" || event.data.type == "registrationCompleted") {
@@ -22,7 +23,7 @@ const Home = () => {
 				const params = new URLSearchParams({ context: contextGlobal }).toString();
 
 				await fetcher(`/api/script/${event.data.code}`, params);
-				window.location.reload()
+
 			}
 		});
 	}, []);
