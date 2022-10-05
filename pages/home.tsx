@@ -1,8 +1,8 @@
 import {useEffect, useState} from 'react';
 import {fetcher, useSessionContext, useStore} from '../lib/hooks';
-import {getSession} from '../../lib/auth';
+import {getSession} from '../lib/auth';
 
-import {getStoreAccessKey} from "@lib/dbs/mysql";
+import {getStoreAccessKey} from "../lib/dbs/mysql";
 
 let contextGlobal = "";
 
