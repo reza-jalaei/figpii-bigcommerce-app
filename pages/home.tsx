@@ -15,37 +15,24 @@ const Home = () => {
 	if (context) contextGlobal = context;
 
 	useEffect(() => {
-		// window.addEventListener("message", async (event) => {
-		// 	if (event.origin != figpiiDomain) {
-		// 		console.log(event.origin);
-		// 		return;
-		// 	}
-		//
-		// 	if (event.data.type == "loginCompleted" || event.data.type == "registrationCompleted") {
-		// 		console.log(event.data)
-		//
-		// 		const params = new URLSearchParams({ context: contextGlobal }).toString();
-		//
-		// 		await fetcher(`/api/script/${event.data.code}`, params);
-		// 	}
-		// });
+		window.addEventListener("message", async (event) => {
+			if (event.origin != figpiiDomain) {
+				console.log(event.origin);
+				return;
+			}
+
+			if (event.data.type == "loginCompleted" || event.data.type == "registrationCompleted") {
+				console.log(event.data)
+
+				const params = new URLSearchParams({ context: contextGlobal }).toString();
+
+				await fetcher(`/api/script/${event.data.code}`, params);
+			}
+		});
 	}, []);
 
 	return (
 		<div className="container">
-			{
-				window.addEventListener("message", async (event) => {
-					if (event.origin != figpiiDomain) {
-						return;
-					}
-
-					if (event.data.type == "loginCompleted" || event.data.type == "registrationCompleted") {
-						const params = new URLSearchParams({ context: contextGlobal }).toString();
-
-						await fetcher(`/api/script/${event.data.code}`, params);
-					}
-				})
-			}
 			<style global jsx>{`
 				html,
 				body,
