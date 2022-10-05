@@ -3,7 +3,7 @@ import { fetcher, useSessionContext, useStore } from '../lib/hooks';
 
 let contextGlobal = "";
 
-const figpiiDomain = "https://reza-staging.figpii.com/";
+const figpiiDomain = "https://reza-staging.figpii.com";
 
 const Home = () => {
 	const [openAuth, setOpenAuth] = useState(false);
@@ -14,27 +14,25 @@ const Home = () => {
 
 	if (context) contextGlobal = context;
 
-	// useEffect(() => {
-	//
-	// }, []);
+	useEffect(() => {
+		window.console.log("hello event listener")
+		window.addEventListener("message", async (event) => {
+			window.console.log("FigPii app listened ", event)
+			window.console.log("type is " + event.data.type)
 
-	window.console.log("hello event listener")
-	window.addEventListener("message", async (event) => {
-		window.console.log(event)
-		window.console.log("type is " + event.data.type)
+			if (event.origin != figpiiDomain) {
+				return;
+			}
 
-		if (event.origin != figpiiDomain) {
-			return;
-		}
+			if (event.data.type == "loginCompleted" || event.data.type == "registrationCompleted") {
+				window.console.log("Successful match ", event.data)
 
-		if (event.data.type == "loginCompleted" || event.data.type == "registrationCompleted") {
-			window.console.log("Successful match ", event.data)
+				const params = new URLSearchParams({ context: contextGlobal }).toString();
 
-			const params = new URLSearchParams({ context: contextGlobal }).toString();
-
-			await fetcher(`/api/script/${event.data.code}`, params);
-		}
-	});
+				await fetcher(`/api/script/${event.data.code}`, params);
+			}
+		});
+	}, []);
 
 	return (
 		<div className="container">
@@ -98,14 +96,14 @@ const Home = () => {
 			)}
 			{openAuth && (
 				<iframe
-					src={`${figpiiDomain}app_debug.php/apps/login?store_type=5949ed&store_name=${store.domain}`}
+					src={`${figpiiDomain}/app_debug.php/apps/login?store_type=5949ed&store_name=${store.domain}`}
 					style={{ width: '100%', height: '100%' }}
 				/>
 			)}
 			{openReg && !isLoading && (
 				<iframe
 					src={
-						`${figpiiDomain}app_debug.php/register?store_type=5949ed&package=STARTER&full_name=${store.first_name}+${store.last_name}&email=${store.admin_email}&org_name=${store.name}&domain_name=${store.domain}`
+						`${figpiiDomain}/app_debug.php/register?store_type=5949ed&package=STARTER&full_name=${store.first_name}+${store.last_name}&email=${store.admin_email}&org_name=${store.name}&domain_name=${store.domain}`
 					}
 					style={{ width: '100%', height: '100%' }}
 				/>
