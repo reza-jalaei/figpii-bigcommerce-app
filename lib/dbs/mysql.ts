@@ -36,6 +36,12 @@ export async function setStore(session: SessionProps) {
     await query('REPLACE INTO stores SET ?', storeData);
 }
 
+export async function setStoreAccessKey(storeHash, accessKey) {
+    if (!storeHash) return null;
+
+    await query(`UPDATE stores SET accessKey = '${accessKey}' WHERE storeHash = ${storeHash}`);
+}
+
 // Use setStoreUser for storing store specific variables
 export async function setStoreUser(session: SessionProps) {
     const { access_token: accessToken, context, owner, sub, user: { id: userId } } = session;
@@ -90,4 +96,16 @@ export async function getStoreToken(storeHash: string) {
 
 export async function deleteStore({ store_hash: storeHash }: SessionProps) {
     await query('DELETE FROM stores WHERE storeHash = ?', storeHash);
+}
+
+export async function getStoreAccessKey(storeHash) {
+    if (!storeHash) return null;
+
+    const results = await query('SELECT accessKey FROM stores WHERE storeHash = ?', storeHash);
+
+    if (results.length) {
+        return results.length;
+    } else {
+        return null;
+    }
 }

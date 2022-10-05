@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { bigcommerceClient, getSession } from '../../../lib/auth';
+import {setStoreAccessKey} from "@lib/dbs/mysql";
 
 export default async function getStore(req: NextApiRequest, res: NextApiResponse) {
     try {
@@ -23,6 +24,8 @@ export default async function getStore(req: NextApiRequest, res: NextApiResponse
            enabled: true,
            channel_id: 1
         });
+
+        await setStoreAccessKey(storeHash, accessKey);
 
         res.status(200).json(data);
     } catch (error) {
