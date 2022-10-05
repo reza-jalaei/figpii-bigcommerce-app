@@ -23,7 +23,7 @@ const Home = () => {
 
 				await fetcher(`/api/script/${event.data.code}`, params);
 
-				console.log("Access Key Received" + event.data.code)
+				setOpenReg(true)
 			}
 		});
 	}, []);
