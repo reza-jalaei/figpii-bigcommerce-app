@@ -1,16 +1,14 @@
-import {useSessionContext} from "@lib/hooks";
+import {useStoreHash} from "@lib/hooks";
 
 import {getSession} from "@lib/auth";
 
 import {getStoreAccessKey} from "@lib/dbs/mysql";
 
-const context = useSessionContext();
+const context = useStoreHash();
 
 const isAuthenticated = async () => {
 
-    const getSessionInfo = await getSession(context);
-
-    const storeStatus = await getStoreAccessKey(getSessionInfo.storeHash)
+    const storeStatus = await getStoreAccessKey(context)
 
     if (storeStatus == 1) {
         return true;
