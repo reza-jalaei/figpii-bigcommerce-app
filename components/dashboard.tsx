@@ -2,7 +2,7 @@ import {getStoreAccessKey} from "@lib/dbs/mysql";
 
 import {useStoreHash} from "@lib/hooks";
 
-export async function isAuthenticated() {
+export async function useIsAuthenticated() {
     const storeHash = useStoreHash();
     const storeStatus = await getStoreAccessKey(storeHash)
 
@@ -14,7 +14,7 @@ export async function isAuthenticated() {
 }
 
 const Dashboard = () => {
-    if (isAuthenticated) {
+    if (useIsAuthenticated) {
         return (
             <h1>Registered</h1>
         )
