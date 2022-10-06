@@ -1,5 +1,6 @@
+// @ts-ignore
 import {useEffect, useState} from 'react';
-import {fetcher, useSessionContext, useStore} from '../lib/hooks';
+import {fetcher, useSessionContext, useStore} from '@lib/hooks';
 
 let contextGlobal = "";
 
