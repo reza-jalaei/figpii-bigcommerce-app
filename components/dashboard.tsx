@@ -1,14 +1,16 @@
-import { NextApiRequest } from 'next';
-
-import { getSession } from '@lib/auth';
+import {useSession} from "../context/session";
+import {getSession} from "@lib/auth";
 
 import {getStoreAccessKey} from "@lib/dbs/mysql";
 
-const isAuthenticated = async (req: NextApiRequest) => {
+const isAuthenticated = async () => {
 
-    const { storeHash } = await getSession(req);
+    const { context } = useSession();
+    const params = new URLSearchParams({ context }).toString();
 
-    const storeStatus = await getStoreAccessKey(storeHash)
+    const getSessionInfo = await getSession(params);
+
+    const storeStatus = await getStoreAccessKey(getSessionInfo.storeHash)
 
     if (storeStatus == 1) {
         return true;
@@ -20,10 +22,12 @@ const isAuthenticated = async (req: NextApiRequest) => {
 const Dashboard = () => {
     if (isAuthenticated) {
         return (
-            <h1>Hello</h1>
+            <h1>Registered</h1>
         )
     } else {
-        return;
+        return(
+            <h1>Not registered</h1>
+        )
     }
 };
 
