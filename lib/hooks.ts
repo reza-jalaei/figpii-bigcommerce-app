@@ -1,7 +1,9 @@
 import useSWR from 'swr';
+import {decodePayload, getSession} from "@lib/auth";
+
 import { useSession } from '../context/session';
 import { ErrorProps, ListItem, Order, QueryParams, ShippingAndProductsInfo } from '../types';
-import {decodePayload, getSession} from "@lib/auth";
+
 
 export async function fetcher(url: string, query: string) {
     const res = await fetch(`${url}?${query}`);
@@ -70,7 +72,7 @@ export function useSessionContext() {
 
 export function useStoreHash() {
     const { context } = useSession();
-    const { context: storeHash, user } = decodePayload(context);
+    const { context: storeHash } = decodePayload(context);
 
     const storeSession = getSession(storeHash);
 
