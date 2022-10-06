@@ -2,7 +2,7 @@ import {getStoreAccessKey} from "@lib/dbs/mysql";
 
 import {useStoreHash} from "@lib/hooks";
 
-const isAuthenticated = async () => {
+export async function isAuthenticated() {
     const storeHash = useStoreHash();
     const storeStatus = await getStoreAccessKey(storeHash)
 
