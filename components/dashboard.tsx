@@ -5,11 +5,8 @@ import { getSession } from '@lib/auth';
 import {getStoreAccessKey} from "@lib/dbs/mysql";
 
 const isAuthenticated = async (req: NextApiRequest) => {
-    const {
-        query: { accessKey },
-    } = req;
 
-    const { accessToken, storeHash } = await getSession(req);
+    const { storeHash } = await getSession(req);
 
     const storeStatus = await getStoreAccessKey(storeHash)
 
