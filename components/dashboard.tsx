@@ -6,9 +6,8 @@ import {getStoreAccessKey} from "@lib/dbs/mysql";
 const isAuthenticated = async () => {
 
     const { context } = useSession();
-    const params = new URLSearchParams({ context }).toString();
 
-    const getSessionInfo = await getSession(params);
+    const getSessionInfo = await getSession(context);
 
     const storeStatus = await getStoreAccessKey(getSessionInfo.storeHash)
 
