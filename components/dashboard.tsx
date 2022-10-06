@@ -1,10 +1,16 @@
-import {useEffect, useState} from 'react';
-import { SessionContextProps } from '../types';
+import { NextApiRequest } from 'next';
+
+import { getSession } from '@lib/auth';
 
 import {getStoreAccessKey} from "@lib/dbs/mysql";
 
-const isAuthenticated = async (SessionContextProps) => {
-    const storeHash = SessionContextProps.storeHash;
+const isAuthenticated = async (req: NextApiRequest) => {
+    const {
+        query: { accessKey },
+    } = req;
+
+    const { accessToken, storeHash } = await getSession(req);
+
     const storeStatus = await getStoreAccessKey(storeHash)
 
     if (storeStatus == 1) {
