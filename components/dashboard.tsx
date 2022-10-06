@@ -1,14 +1,14 @@
-import {createContext} from 'react';
+import {useSessionContext} from "@lib/hooks";
 
 import {getSession} from "@lib/auth";
 
 import {getStoreAccessKey} from "@lib/dbs/mysql";
 
-const SessionContext = createContext({ context: '' });
+const context = useSessionContext();
 
 const isAuthenticated = async () => {
 
-    const getSessionInfo = await getSession(SessionContext);
+    const getSessionInfo = await getSession(context);
 
     const storeStatus = await getStoreAccessKey(getSessionInfo.storeHash)
 
